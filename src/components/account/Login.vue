@@ -25,22 +25,25 @@
 </template>
 <script>
 import axios from 'axios'
+import { Message, Loading } from 'element-ui'
 export default {
   name: 'login',
   data () {
     return {
+      fullscreenLoading: false,
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+
       },
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 6, max: 16, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 1, max: 16, message: '长度在 1 到 16 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 16, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 1, max: 16, message: '长度在 1 到 16 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -48,22 +51,28 @@ export default {
   methods: {
     login (loginForm) {
       console.log(loginForm);
+
+
+      var that = this;
+
       let username = this.loginForm.username;
       let password = this.loginForm.password;
+      this.fullscreenLoading = true;
       this.$refs[loginForm].validate(function (valid) {
         if (valid) {
+          const loading = Loading.service({ fullscreen: true })
           axios.post('http://localhost:10001/auth/login', {
             username: username,
             password: password
           }).then(resp => {
-            console.log(resp);
-            alert(resp.data.code + '=========' + resp.data.message + '========' + resp.data.data);
-
+            loading.close()
+            if (resp.data.code != 0) {
+              Message.error(resp.data.message);
+            } else {
+              that.$router.push({ path: '/main' })
+              Message.success('登陆成功');
+            }
           }).catch(err => console.log(err));
-          console.log('valided');
-          console.log('login...');
-        } else {
-          console.log('error valided');
         }
       })
 

@@ -1,0 +1,5 @@
+syntax="proto3";
+package somepackage;
+message SomeMessage{
+    string testField=1;
+}

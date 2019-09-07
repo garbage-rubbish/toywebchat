@@ -1,0 +1,6 @@
+package somepackage;
+syntax = "proto3";
+
+message SomeMessage {
+    string testField = 1; // becomes awesomeField
+}

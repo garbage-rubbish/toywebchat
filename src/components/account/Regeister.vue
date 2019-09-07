@@ -33,6 +33,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   methods: {
     regeister (regeisterForm) {
@@ -52,6 +53,22 @@ export default {
   },
   data: function () {
 
+    const validUniqueUsername = (rule, value, callback) => {
+      let url = 'http://localhost:10001/user/' + value;
+      if (value !== '') {
+        axios.get(url, {
+          headers: {
+            'Access-Control-Allow-Origin': ''
+          }
+        }).then((resp) => {
+          if (!resp.data.data) {
+            callback(new Error('用户名已存在'))
+          }
+        }).catch(resp => console.log(resp));
+
+      }
+    }
+
     var validaconfirmPasswordValidatetePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'));
@@ -70,11 +87,12 @@ export default {
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 1, max: 16, message: '长度在 1 到 16个字符', trigger: 'blur' },
+          { validator: validUniqueUsername, trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 1, max: 16, message: '长度在 1 到 16 个字符', trigger: 'blur' }
         ],
         confirmPassword: [
           { required: true, validator: validaconfirmPasswordValidatetePass2, trigger: 'blur' }
