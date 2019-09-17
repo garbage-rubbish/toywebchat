@@ -72,7 +72,12 @@ export default {
               that.$router.push({ path: '/main' })
               Message.success('登陆成功');
             }
-          }).catch(err => console.log(err));
+          }).catch((err) => {
+            console.log(err);
+            loading.close()
+            Message.error(err.message);
+          }
+          );
         }
       })
 

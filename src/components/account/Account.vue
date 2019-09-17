@@ -46,9 +46,11 @@ export default {
 }
 </script>
 <style scoped>
-.outer {
-  height: 800px;
-  background: url("../../assets/moshou.jpg");
+.outer > div {
+  text-align: center;
+  padding: 25px;
+  background-color: #000000; /* IE6和部分IE7内核的浏览器(如QQ浏览器)下颜色被覆盖 */
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .fold-enter-active {
   animation-name: fold-in;

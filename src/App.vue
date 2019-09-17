@@ -11,4 +11,7 @@ export default {
 </script>
 
 <style>
+body {
+  background-image: url("./assets/moshou.jpg");
+}
 </style>
